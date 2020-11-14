@@ -128,5 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#Only for this projecr ignore the big data Folder
+#Only for this project ignore the big data Folder
 **/data
