@@ -19,8 +19,8 @@ if __name__ ==  '__main__':
     # First we load the data set that we will use for training. Each sample is an image with its mask (label). An image is represented as a 3x250x250 array with each of the 3 color chanel being 250x250 pixels. The asssociated mask is a 250x250 array, 
 
     # %%
-    folder_path_image = 'data\image'
-    folder_path_mask  = 'data\mask'
+    folder_path_image = 'data/image'
+    folder_path_mask  = 'data/mask'
 
     train_dataset = DataLoaderSegmentation(folder_path_image,folder_path_mask)
     train_loader = DataLoader(train_dataset,batch_size=5, shuffle=True,num_workers=2)
