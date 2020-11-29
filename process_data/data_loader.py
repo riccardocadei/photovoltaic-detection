@@ -12,8 +12,8 @@ class DataLoaderSegmentation(data.Dataset):
         super(DataLoaderSegmentation, self).__init__()
         self.img_files = glob.glob(os.path.join(folder_path_img,'*.png'))
         self.mask_files =glob.glob(os.path.join(folder_path_mask,'*.png'))
-        self.transformsimage = transforms.Compose([transforms.ToTensor(),transforms.Resize((572,572))])
-        self.transformsmask = transforms.Compose([transforms.ToTensor(), transforms.Resize((388,388))])
+        self.transformsimage = transforms.Compose([transforms.RandomHorizontalFlip(p=0.5),transforms.ToTensor()])
+        self.transformsmask = transforms.Compose([transforms.RandomHorizontalFlip(p=0.5),transforms.ToTensor()])
 
     def __getitem__(self, index):
         image = Image.open(self.img_files[index])
