@@ -2,13 +2,14 @@ from sklearn.model_selection import KFold
 from torch.utils.data import DataLoader, dataset
 from loss.loss import *
 import numpy as np
+from torch.autograd import Variable
+
 
 
 
 def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
     
     for epoch in range(num_epochs):
-        print('Epoch n.',epoch)
         
         for i, (images,labels) in enumerate(train_loader):
             if torch.cuda.is_available():
@@ -20,7 +21,7 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
             loss = loss_function(torch.squeeze(outputs), torch.squeeze(labels))
             loss.backward()
             optimizer.step()
-            
+        print('Epoch n.',epoch, 'Loss',np.around(loss.item(),4))
     return model
 
 
@@ -33,9 +34,9 @@ def test_model(test_loader,optimizer,model):
             images=Variable(images.cuda())
             labels=Variable(labels.cuda())
         prediction = model(images)
-        iou_i = iou(np.around(prediction.detach().numpy()),labels.detach().numpy())
+        iou_i = iou(np.around(prediction.detach().cpu().numpy()),labels.detach().cpu().numpy())
         iou_test += [iou_i]
-        acc_i = accuracy(np.around(prediction.detach().numpy()),labels.detach().numpy())
+        acc_i = accuracy(np.around(prediction.detach().cpu().numpy()),labels.detach().cpu().numpy())
         acc_test += [acc_i]
         
     return np.mean(iou_test), np.mean(acc_test)
@@ -48,7 +49,7 @@ def cross_validation(train_dataset,loss_function,input_model,num_epochs,lr):
     iou_test = []
     acc_test = []
     #define kfold
-    kfold =KFold(n_splits=5,shuffle=True)
+    kfold =KFold(n_splits=2,shuffle=True)
     for fold, (train_index, test_index) in enumerate(kfold.split(train_dataset)): 
         # split into k Folders
         train_fold = dataset.Subset(train_dataset,train_index)
@@ -70,19 +71,20 @@ def cross_validation(train_dataset,loss_function,input_model,num_epochs,lr):
     print("\nAverage test accuracy: %f" % np.mean(acc_test))
     print("Variance test accuracy: %f" % np.var(acc_test))
         
-    return np.mean(iou_test), np.mean(acc_test)
+    return np.mean(iou_test), np.mean(acc_test), model
 
 
 def select_hyper_param(train_dataset,loss_function,input_model,num_epochs,lr_candidates):
     
     comparison = []
     for lr in lr_candidates:
-        print('---------------------------------------------------------------------\n'
+        print('---------------------------------------------------------------------\n')
         print('Learning Rate = {}\n'.format(lr))
-        iou, acc = cross_validation(train_dataset, loss_function, input_model, num_epochs, lr)
-        comparison += [lr, iou, acc]
-        comparison = np.array(comparison)
-        ind_best =  np.argmax(comparison[:,1])  #   np.argmax(comparison[:,2]) 
-        best_lr = comparison[ind_best,0]
+        iou, acc,model = cross_validation(train_dataset, loss_function, input_model, num_epochs, lr)
+        comparison.append([lr, iou, acc, model])
+    comparison = np.array(comparison).reshape(len(lr_candidates),4)
+    ind_best =  np.argmax(comparison[:,1]) 
+    best_lr = comparison[ind_best,0]
+    best_model = comparison[ind_best,3]
         
-    return best_lr
+    return best_lr, best_model
