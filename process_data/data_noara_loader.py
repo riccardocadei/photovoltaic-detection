@@ -6,8 +6,7 @@ import os
 from PIL import Image
 import torch
 import random
-# import  data_loader.flip 
-# import data_loader.normalization2
+from process_data.data_loader import flip, normalization2
 
 
 class DataLoaderNoARA(data.Dataset):
@@ -65,39 +64,3 @@ class DataLoaderNoARA(data.Dataset):
 
     def __len__(self):
         return len(self.img_files)
-
-def flip(image, option_value):
-    """
-    Args:
-        image : numpy array of image
-        option_value = random integer between 0 to 3
-    Return :
-        image : numpy array of flipped image
-    """
-    if option_value == 0:
-        # vertical
-        image = np.flip(image, option_value)
-    elif option_value == 1:
-        # horizontal
-        image = np.flip(image, option_value)
-    elif option_value == 2:
-        # horizontally and vertically flip
-        image = np.flip(image, 0)
-        image = np.flip(image, 1)
-    else:
-        # no effect
-        image = image
-        
-    return image
-
-def normalization2(image, max, min):
-    """Normalization to range of [min, max]
-    Args :
-        image : numpy array of image
-        mean :
-    Return :
-        image : numpy array of image with values turned into standard scores
-    """
-    image_new = (image - np.min(image))*(max - min)/(np.max(image)-np.min(image)) + min
-    
-    return image_new
