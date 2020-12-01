@@ -10,7 +10,7 @@ from torch.autograd import Variable
 def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
     
     for epoch in range(num_epochs):
-        
+        running_loss = 0.0
         for i, (images,labels) in enumerate(train_loader):
             if torch.cuda.is_available():
                 images=Variable(images.cuda())
@@ -21,7 +21,9 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
             loss = loss_function(torch.squeeze(outputs), torch.squeeze(labels))
             loss.backward()
             optimizer.step()
-        print('Epoch n.',epoch, 'Loss',np.around(loss.item(),4))
+            running_loss += loss.item()
+
+        print('Epoch n.',epoch, 'Loss',np.around(running_loss/len(train_loader),4))
     return model
 
 
@@ -58,7 +60,7 @@ def cross_validation(train_dataset,loss_function,input_model,num_epochs,lr):
         test_fold_loader = DataLoader(test_fold,batch_size=2, shuffle=True,num_workers=2)
         
         #train the model
-        optimizer = torch.optim.SGD(input_model.parameters(), lr=lr)
+        optimizer = torch.optim.Adam(input_model.parameters(), lr=lr)
         model = training_model(train_fold_loader,loss_function,optimizer,input_model,num_epochs)
         # make prediction and compute the evaluation metrics
         iou, acc = test_model(test_fold_loader,optimizer,model)
