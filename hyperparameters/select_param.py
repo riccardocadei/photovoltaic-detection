@@ -2,6 +2,7 @@ from sklearn.model_selection import KFold
 from torch.utils.data import DataLoader, dataset
 from loss.loss import *
 import numpy as np
+import time
 from torch.autograd import Variable
 
 
@@ -11,6 +12,7 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
     
     for epoch in range(num_epochs):
         running_loss = 0.0
+        t0 = time.time()
         for i, (images,labels) in enumerate(train_loader):
             if torch.cuda.is_available():
                 images=Variable(images.cuda())
@@ -22,8 +24,8 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-
-        print('Epoch n.',epoch, 'Loss',np.around(running_loss/len(train_loader),4))
+        if (epoch % 10) == 0:
+            print('Epoch n.',epoch, 'Loss',np.around(running_loss/len(train_loader),4),'Time Remaining',np.around((num_epochs-epoch)*(time.time()-t0)/60,4))
     return model
 
 
@@ -37,9 +39,9 @@ def test_model(test_loader,optimizer,model):
             labels=Variable(labels.cuda())
         prediction = model(images)
         iou_i = iou(np.around(prediction.detach().cpu().numpy()),labels.detach().cpu().numpy())
-        iou_test += [iou_i]
+        iou_test.append(iou_i)
         acc_i = accuracy(np.around(prediction.detach().cpu().numpy()),labels.detach().cpu().numpy())
-        acc_test += [acc_i]
+        acc_test.append(acc_i)
         
     return np.mean(iou_test), np.mean(acc_test)
 
@@ -60,13 +62,13 @@ def cross_validation(train_dataset,loss_function,input_model,num_epochs,lr):
         test_fold_loader = DataLoader(test_fold,batch_size=2, shuffle=True,num_workers=2)
         
         #train the model
-        optimizer = torch.optim.Adam(input_model.parameters(), lr=lr)
+        optimizer = torch.optim.SGD(input_model.parameters(), lr=lr)
         model = training_model(train_fold_loader,loss_function,optimizer,input_model,num_epochs)
         # make prediction and compute the evaluation metrics
         iou, acc = test_model(test_fold_loader,optimizer,model)
         print('Iter {}: IoU = {:.4} /  Accuracy = {:.4}'.format(fold, iou, acc))
-        iou_test += [iou]
-        acc_test += [acc]
+        iou_test.append(iou)
+        acc_test.append(acc)
         
     print("\nAverage test IoU: %f" % np.mean(iou_test))
     print("Variance test IoU: %f" % np.var(iou_test))
@@ -82,11 +84,12 @@ def select_hyper_param(train_dataset,loss_function,input_model,num_epochs,lr_can
     for lr in lr_candidates:
         print('---------------------------------------------------------------------\n')
         print('Learning Rate = {}\n'.format(lr))
-        iou, acc,model = cross_validation(train_dataset, loss_function, input_model, num_epochs, lr)
+        iou, acc, model = cross_validation(train_dataset, loss_function, input_model, num_epochs, lr)
         comparison.append([lr, iou, acc, model])
     comparison = np.array(comparison).reshape(len(lr_candidates),4)
     ind_best =  np.argmax(comparison[:,1]) 
     best_lr = comparison[ind_best,0]
     best_model = comparison[ind_best,3]
+    best_iou = np.max(comparison[:,1])
         
-    return best_lr, best_model
+    return best_lr, best_model, best_iou
