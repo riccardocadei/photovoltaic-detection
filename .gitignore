@@ -130,3 +130,4 @@ dmypy.json
 
 #Only for this project ignore the big data Folder
 **/data
+model/best_model02122020.pt
