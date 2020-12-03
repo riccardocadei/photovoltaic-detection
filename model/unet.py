@@ -16,6 +16,7 @@ class UNet(nn.Module):
         self.up3 = up(256, 64, bilinear)
         self.up4 = up(128, 64, bilinear)
         self.outc = outconv(64, n_classes)
+        self.activation = nn.Sigmoid()
     
     def forward(self, x):
         x1 = self.inc(x)
@@ -28,7 +29,10 @@ class UNet(nn.Module):
         x = self.up3(x, x2)
         x = self.up4(x, x1)
         x = self.outc(x)
-        return torch.sigmoid(x)
+        return x
+
+    def predict(self, x):
+        return self.activation(self.forward(x))
     
 
 class double_conv(nn.Module):
