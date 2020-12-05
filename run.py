@@ -27,7 +27,7 @@ if __name__ ==  '__main__':
     noara_dataset = DataLoaderNoARA(folder_path_noara)
 
     #combine two datasets
-    train_loader = DataLoader(ConcatDataset([train_dataset,noara_dataset]),batch_size=5, shuffle=True ,num_workers=0)
+    train_loader = DataLoader(ConcatDataset([train_dataset,noara_dataset]),batch_size=32, shuffle=True ,num_workers=0)
 
     model = UNet(3,1,False).to(device)
     print(model)
