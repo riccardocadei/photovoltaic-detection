@@ -35,7 +35,8 @@ if __name__ ==  '__main__':
     num_epochs = 500
     loss_function = torch.nn.BCEWithLogitsLoss(weight=torch.FloatTensor([5]).cuda())
     optimizer = torch.optim.Adam(model.parameters(), lr=0.05)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1, gamma=0.5, last_epoch=-1, verbose=True)
+    #scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1, gamma=0.5, last_epoch=-1, verbose=True)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 10, eta_min=0, last_epoch=-1, verbose=True)
 
     trained_model = training_model(train_loader,loss_function,optimizer,model,num_epochs,scheduler)
 
