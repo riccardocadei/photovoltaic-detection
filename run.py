@@ -18,6 +18,7 @@ from process_data.import_test import *
 if __name__ ==  '__main__':
 
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    folder_path_image = 'data/image'
     folder_path_mask  = 'data/mask'
     folder_path_noara  = 'data/noARA'
 
@@ -27,7 +28,7 @@ if __name__ ==  '__main__':
     #combine two datasets
     train_loader = DataLoader(train_dataset,batch_size=5, shuffle=True ,num_workers=0)
     # %%
-    
+
     lr_candidates = np.logspace(-1,-2,5)
     num_epochs = 70
     loss_function = torch.nn.BCEWithLogitsLoss(pos_weight=torch.FloatTensor([6]).cuda())
