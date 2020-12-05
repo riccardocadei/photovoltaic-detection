@@ -24,7 +24,7 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-        if (epoch % 1) == 0:
+        if (epoch % 10) == 0:
             print('Epoch n.',epoch, 'Loss',np.around(running_loss/len(train_loader),4),'Time Remaining',np.around((num_epochs-epoch)*(time.time()-t0)/60,4))
     return model
 

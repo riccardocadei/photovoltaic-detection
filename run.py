@@ -40,33 +40,17 @@ if __name__ ==  '__main__':
     train_dataset = DataLoaderSegmentation(folder_path_image,folder_path_mask)
     noara_dataset = DataLoaderNoARA(folder_path_noara)
     #combine two datasets
-    train_loader = DataLoader(ConcatDataset([train_dataset,noara_dataset]),batch_size=5, shuffle=True ,num_workers=0)
+    print(len(train_dataset),print(noara_dataset))
 
-    # %% [markdown]
-    # # Initiate the model
-    # In this report, we will use the Unet model presented in medical image segmentation, and in the previous papers of the Professor.
-
-    # %%
-    model = UNet(3,1,False).to(device)
-    print(model)
-
-    # %% [markdown]
-    # # Loss & Optimizer
-
-    # %%
-    loss_function = torch.nn.BCELoss(weight=torch.FloatTensor([6]).cuda())
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.005)
-    #optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
-
-    # %% [markdown]
-    # # Training Loop
-
-    # %%
-    num_epochs = 200
+    loss_function = torch.nn.BCEWithLogitsLoss(pos_weight=torch.FloatTensor([6]).cuda())
     model = UNet(3,1,False).to(device)
 
-    trained_model = training_model(train_loader,loss_function,optimizer,model,num_epochs)
+    lr_candidates = np.logspace(-2,-3,3)
+    num_epochs = 70
+    loss_function = torch.nn.BCEWithLogitsLoss(pos_weight=torch.FloatTensor([6]).cuda())
 
-    # %%
-    torch.save(model.state_dict(), 'model/trained_model.pt')
+    input_model = UNet(3,1,False).to(device)
+
+    best_lr, best_model, best_iou = select_hyper_param(train_dataset,loss_function,input_model,num_epochs,lr_candidates)
+    torch.save(model.state_dict(), 'model/best_model.pt')
 
