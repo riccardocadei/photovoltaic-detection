@@ -16,7 +16,7 @@ from hyperparameters.select_param import *
 from process_data.import_test import *
 
 if __name__ ==  '__main__':
-    
+
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     folder_path_image = 'data/image'
     folder_path_mask  = 'data/mask'
@@ -37,6 +37,6 @@ if __name__ ==  '__main__':
     optimizer = torch.optim.Adam(model.parameters(), lr=0.05)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1, gamma=0.5, last_epoch=-1, verbose=True)
 
-    trained_model = training_model(train_loader,loss_function,optimizer,model,num_epochs)
+    trained_model = training_model(train_loader,loss_function,optimizer,model,num_epochs,scheduler)
 
     torch.save(trained_model.state_dict(), 'model/trained_model.pt')
