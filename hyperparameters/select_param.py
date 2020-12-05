@@ -4,11 +4,12 @@ from loss.loss import *
 import numpy as np
 import time
 from torch.autograd import Variable
+import torch
 
+def training_model(train_loader,loss_function,optimizer,model,num_epochs,scheduler=None):
 
-
-
-def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
+    if scheduler == None:
+        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 50, gamma=1, last_epoch=-1, verbose=False)
     
     for epoch in range(num_epochs):
         running_loss = 0.0
@@ -23,7 +24,9 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs=10):
             loss = loss_function(torch.squeeze(outputs), torch.squeeze(labels))
             loss.backward()
             optimizer.step()
+            
             running_loss += loss.item()
+        scheduler.step()
         if (epoch % 10) == 0:
             print('Epoch n.',epoch, 'Loss',np.around(running_loss/len(train_loader),4),'Time Remaining',np.around((num_epochs-epoch)*(time.time()-t0)/60,4))
     return model
