@@ -15,9 +15,12 @@ from process_data.data_noara_loader import *
 from hyperparameters.select_param import *
 from process_data.import_test import *
 
+
 if __name__ ==  '__main__':
 
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    torch.manual_seed(0)
+    np.random.seed(0)
     folder_path_image = 'data/image'
     folder_path_mask  = 'data/mask'
     folder_path_noara  = 'data/noARA'

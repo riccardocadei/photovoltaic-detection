@@ -56,7 +56,7 @@ def cross_validation(train_dataset,loss_function,input_model,num_epochs,lr):
     iou_test = []
     acc_test = []
     #define kfold
-    kfold =KFold(n_splits=5,shuffle=True)
+    kfold =KFold(n_splits=2,shuffle=True)
     for fold, (train_index, test_index) in enumerate(kfold.split(train_dataset)): 
         # split into k Folders
         train_fold = dataset.Subset(train_dataset,train_index)
