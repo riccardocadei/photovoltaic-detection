@@ -21,6 +21,7 @@ if __name__ ==  '__main__':
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     torch.manual_seed(0)
     np.random.seed(0)
+    torch.set_deterministic(True)
     folder_path_image = 'data/image'
     folder_path_mask  = 'data/mask'
     folder_path_noara  = 'data/noARA'
