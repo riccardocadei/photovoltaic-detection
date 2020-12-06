@@ -61,8 +61,8 @@ def cross_validation(train_dataset,loss_function,input_model,num_epochs,lr):
         # split into k Folders
         train_fold = dataset.Subset(train_dataset,train_index)
         test_fold = dataset.Subset(train_dataset,test_index) 
-        train_fold_loader = DataLoader(train_fold,batch_size=2, shuffle=True,num_workers=2)
-        test_fold_loader = DataLoader(test_fold,batch_size=2, shuffle=True,num_workers=2)
+        train_fold_loader = DataLoader(train_fold,batch_size=2, shuffle=True,num_workers=0)
+        test_fold_loader = DataLoader(test_fold,batch_size=2, shuffle=True,num_workers=0)
         
         #train the model
         optimizer = torch.optim.SGD(input_model.parameters(), lr=lr)
