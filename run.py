@@ -36,4 +36,5 @@ if __name__ ==  '__main__':
 
     best_lr, best_model, best_iou = select_hyper_param(train_dataset,loss_function,input_model,num_epochs,lr_candidates)
 
-    torch.save(trained_model.state_dict(), 'model/trained_model.pt')
+    torch.save(best_model.state_dict(), 'model/best_model.pt')
+ 
