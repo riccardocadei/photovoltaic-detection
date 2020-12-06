@@ -34,6 +34,7 @@ class DataLoaderSegmentation(data.Dataset):
         """
         image = Image.open(self.img_files[index])
         img_as_np = np.asarray(image)
+        np.random.seed(0)
 
         # AUGMENTATION
         
@@ -82,6 +83,8 @@ def flip(image, option_value):
     Return :
         image : numpy array of flipped image
     """
+    
+
     if option_value == 0:
         # vertical
         image = np.flip(image, option_value)
