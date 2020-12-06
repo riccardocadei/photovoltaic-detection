@@ -32,7 +32,7 @@ if __name__ ==  '__main__':
     train_loader = DataLoader(train_dataset,batch_size=5, shuffle=True ,num_workers=0)
     # %%
 
-    lr_candidates = np.logspace(-1,-2,5)
+    lr_candidates = np.logspace(-2,-3,3)
     num_epochs = 70
     loss_function = torch.nn.BCEWithLogitsLoss(pos_weight=torch.FloatTensor([6]).cuda())
     input_model = UNet(3,1,False).to(device)
