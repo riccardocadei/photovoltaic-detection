@@ -20,16 +20,20 @@ if __name__ ==  '__main__':
 
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     def seed_torch(seed=0):
-        np.random.seed(0)
-        os.environ['PYTHONHASHSEED'] = str(0)
-        np.random.seed(0)
-        torch.manual_seed(0)
-        torch.cuda.manual_seed(0)
-        torch.cuda.manual_seed_all(0) # if you are using multi-GPU.
+        np.random.seed(seed)
+        os.environ['PYTHONHASHSEED'] = str(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+        torch.backends.cudnn.enabled = False 
         torch.backends.cudnn.benchmark = False
         torch.backends.cudnn.deterministic = True
         
     seed_torch()
+
+    def _init_fn():
+        np.random.seed(0)
 
     folder_path_image = 'data/image'
     folder_path_mask  = 'data/mask'

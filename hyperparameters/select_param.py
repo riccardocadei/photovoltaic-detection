@@ -6,6 +6,9 @@ import time
 from torch.autograd import Variable
 import torch
 
+def _init_fn():
+    np.random.seed(0)
+
 def training_model(train_loader,loss_function,optimizer,model,num_epochs,scheduler=None):
 
     if scheduler == None:
@@ -61,8 +64,8 @@ def cross_validation(train_dataset,loss_function,input_model,num_epochs,lr):
         # split into k Folders
         train_fold = dataset.Subset(train_dataset,train_index)
         test_fold = dataset.Subset(train_dataset,test_index) 
-        train_fold_loader = DataLoader(train_fold,batch_size=2, shuffle=True,num_workers=0)
-        test_fold_loader = DataLoader(test_fold,batch_size=2, shuffle=True,num_workers=0)
+        train_fold_loader = DataLoader(train_fold,batch_size=2, shuffle=True,num_workers=0,worker_init_fn=_init_fn)
+        test_fold_loader = DataLoader(test_fold,batch_size=2, shuffle=True,num_workers=0,worker_init_fn=_init_fn)
         
         #train the model
         optimizer = torch.optim.SGD(input_model.parameters(), lr=lr)
