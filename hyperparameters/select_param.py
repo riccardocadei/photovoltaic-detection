@@ -79,9 +79,9 @@ def test_model(test_loader,model):
             images=Variable(images.cuda())
             labels=Variable(labels.cuda())
         prediction = model(images)
-        iou_i = iou(np.around(sigmoid(prediction.detach().cpu().numpy())),labels.detach().cpu().numpy())
+        iou_i = iou(np.around(model.predict(prediction.detach().cpu().numpy())),labels.detach().cpu().numpy())
         iou_test.append(iou_i)
-        acc_i = accuracy(np.around(sigmoid(prediction.detach().cpu().numpy())),labels.detach().cpu().numpy())
+        acc_i = accuracy(np.around(model.predict(prediction.detach().cpu().numpy())),labels.detach().cpu().numpy())
         acc_test.append(acc_i)
     return np.mean(iou_test), np.mean(acc_test)
 
