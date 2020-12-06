@@ -13,6 +13,8 @@ from matplotlib import image
 from PIL import Image
 import cv2
 
+
+
 def import_and_show(model,name):
     fig = plt.figure()
     fig.set_size_inches(12, 7, forward=True)
@@ -28,6 +30,6 @@ def import_and_show(model,name):
     test = torch.tensor(np.transpose(test))
     test = test.float()
 
-    ypred = torch.squeeze(model(torch.unsqueeze(test,0).cuda())).cpu().detach().numpy()
+    ypred = torch.squeeze(model.predict(torch.unsqueeze(test,0).cuda())).cpu().detach().numpy()
     ax2.imshow(np.transpose(np.around(ypred)))
     plt.show()

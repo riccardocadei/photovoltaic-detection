@@ -29,7 +29,10 @@ class UNet(nn.Module):
         x = self.up3(x, x2)
         x = self.up4(x, x1)
         x = self.outc(x)
-        return self.activation(x)
+        return x
+    
+    def predict(self,x):
+        return self.activation(self.forward(x))
     
 
 class double_conv(nn.Module):

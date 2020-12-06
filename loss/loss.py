@@ -1,10 +1,13 @@
 import numpy as np
+import math
 
 import torch.nn.functional as F
 import torch.nn as nn
 import torch
 from scipy.ndimage import distance_transform_edt
 
+def sigmoid(x):
+    return 1/(1+np.exp(-x))
 
 def iou(pred,target):
     '''Compute the intersection over union between a prediction and a targer
@@ -16,10 +19,17 @@ def iou(pred,target):
     Returns:
         double: precision between pred and target
     '''
+    if np.all(target == 0):
+        target = 1 - target
+        pred = 1-pred
+
     intersection = np.logical_and(pred, target)
     union = np.logical_or(pred, target)
+    result = np.sum(intersection)/np.sum(union)
+    if math.isnan(result):
+        result = 0
     
-    return np.sum(intersection)/np.sum(union)
+    return result
 
 def accuracy(pred,target,normalize=True, sample_weight=None):
     '''Compute the accuracy between a prediction and a target, which is equivalent to (TP+TN)/total

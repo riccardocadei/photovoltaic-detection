@@ -7,7 +7,7 @@ from PIL import Image
 import torch
 import random
 from process_data.data_loader import flip, normalization2
-
+import matplotlib.pyplot  as plt
 
 class DataLoaderNoARA(data.Dataset):
     """
@@ -35,6 +35,7 @@ class DataLoaderNoARA(data.Dataset):
         """
         image = Image.open(self.img_files[index])
         img_as_np = np.asarray(image)
+        np.random.seed(0)
 
         # AUGMENTATION
         
@@ -58,7 +59,8 @@ class DataLoaderNoARA(data.Dataset):
         img_as_np = np.transpose(img_as_np,(2,0,1))
         img_as_tensor = torch.from_numpy(img_as_np).float()  
         
-        
+
+
         """
         # GET noPv MASK All balck
         """
