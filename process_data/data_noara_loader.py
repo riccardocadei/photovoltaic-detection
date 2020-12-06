@@ -40,10 +40,20 @@ class DataLoaderNoARA(data.Dataset):
         # AUGMENTATION
         
         # flip {0: vertical, 1: horizontal, 2: both, 3: none}
-        flip_num = random.randint(0, 3) 
+        flip_num = random.randint(0, 3)         
         img_as_np = flip(img_as_np, flip_num)
-        # Normalize the image (in min max range)
-        img_as_np = normalization2(img_as_np, max=1, min=0)
+        # rotate of rot_num*90 degrees in counterclockwise
+        # since we are altready flipping, rotating of 180 or 270 is redundant
+        rot_num = random.randint(0, 1)
+        img_as_np = np.rot90(img_as_np, rot_num)
+        # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
+        #noise_num = random.randint(0, 2)
+        #noise_param = 20
+        #img_as_np = add_noise(img_as_np, noise_num, noise_param)
+        # Brightness and Saturation
+        sat = random.randint(0,75)
+        bright = random.randint(0,40)
+        img_as_np = change_hsv(img_as_np, sat, bright)
        
         # Convert numpy array to tensor
         img_as_np = np.transpose(img_as_np,(2,0,1))
