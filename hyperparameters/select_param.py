@@ -55,7 +55,7 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs,schedul
             
             running_train_loss += loss.item()
         scheduler.step()
-        if (epoch % 1) == 0:
+        if (epoch % 10) == 0:
             print('Epoch n.',epoch, 'Train Loss',np.around(running_train_loss/len(train_loader),4),'Time Remaining',np.around((num_epochs-epoch)*(time.time()-t0)/60,4))
     return model
 
@@ -78,10 +78,10 @@ def test_model(test_loader,model):
         if torch.cuda.is_available():
             images=Variable(images.cuda())
             labels=Variable(labels.cuda())
-        prediction = model(images)
-        iou_i = iou(np.around(model.predict(prediction.detach().cpu().numpy())),labels.detach().cpu().numpy())
+        prediction = model.predict(images)
+        iou_i = iou(np.around((prediction).detach().cpu().numpy()),labels.detach().cpu().numpy())
         iou_test.append(iou_i)
-        acc_i = accuracy(np.around(model.predict(prediction.detach().cpu().numpy())),labels.detach().cpu().numpy())
+        acc_i = accuracy(np.around((prediction).detach().cpu().numpy()),labels.detach().cpu().numpy())
         acc_test.append(acc_i)
     return np.mean(iou_test), np.mean(acc_test)
 
