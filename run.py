@@ -30,18 +30,28 @@ if __name__ ==  '__main__':
     folder_path_noara  = 'data/noARA'
 
     #load dataset
-    train_dataset = ConcatDataset([DataLoaderSegmentation(folder_path_image,folder_path_mask),DataLoaderNoARA(folder_path_noara)])
+    dataset = ConcatDataset([DataLoaderSegmentation(folder_path_image,folder_path_mask),DataLoaderNoARA(folder_path_noara)])
 
-    #combine two datasets
-    train_loader = DataLoader(train_dataset,batch_size=5, shuffle=True ,num_workers=0)
-    # %%
+    #split into train, val, test
+    dataset_size = len(dataset)
+    train_size = int(0.8*len(dataset))
+    val_size = int(0.1*len(dataset))
+    test_size = len(dataset) - train_size - val_size
+    train_set, val_set, test_set = torch.utils.data.random_split(dataset, [train_size, val_size, test_size])
 
-    lr_candidates = np.logspace(-2,-3,3)
-    num_epochs = 70
+
+    train_loader = DataLoader(train_set,batch_size=2, shuffle=True ,num_workers=0)
+    val_loader = DataLoader(val_set,batch_size=2, shuffle=True ,num_workers=0)
+    test_loader = DataLoader(test_set,batch_size=2, shuffle=True ,num_workers=0)
+
+
+    lr_candidates = np.logspace(-1,-2,num=5)
+    num_epochs = 100
     loss_function = torch.nn.BCEWithLogitsLoss(pos_weight=torch.FloatTensor([6]).cuda())
+
     input_model = UNet(3,1,False).to(device)
 
-    best_lr, best_model, best_iou = select_hyper_param(train_dataset,loss_function,input_model,num_epochs,lr_candidates)
+    best_model, best_iou, history_iou = adptative_learning(train_set,val_loader,loss_function,input_model,num_epochs,lr_candidates)
 
     torch.save(best_model.state_dict(), 'model/best_model.pt')
  
