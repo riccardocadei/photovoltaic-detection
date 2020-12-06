@@ -6,6 +6,7 @@ import os
 from PIL import Image
 import torch
 import random
+import cv2
 
 
 class DataLoaderSegmentation(data.Dataset):
@@ -38,8 +39,22 @@ class DataLoaderSegmentation(data.Dataset):
         # AUGMENTATION
         
         # flip {0: vertical, 1: horizontal, 2: both, 3: none}
-        flip_num = random.randint(0, 3) 
+        flip_num = random.randint(0, 3)         
         img_as_np = flip(img_as_np, flip_num)
+        # rotate of rot_num*90 degrees in counterclockwise
+        # since we are altready flipping, rotating of 180 or 270 is redundant
+        rot_num = random.randint(0, 1)
+        img_as_np = np.rot90(img_as_np, rot_num)
+        # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
+        #noise_num = random.randint(0, 2)
+        #noise_param = 20
+        #img_as_np = add_noise(img_as_np, noise_num, noise_param)
+        # Brightness and Saturation
+        sat = random.randint(0,75)
+        bright = random.randint(0,40)
+        img_as_np = change_hsv(img_as_np, sat, bright)
+       
+      
         # Normalize the image (in min max range)
         img_as_np = normalization2(img_as_np, max=1, min=0)
        
@@ -58,6 +73,8 @@ class DataLoaderSegmentation(data.Dataset):
         
         # flip the mask with respect to image
         msk_as_np = flip(msk_as_np, flip_num)
+        # rotate the mask with respect to image
+        msk_as_np = np.rot90(msk_as_np, rot_num)
         
         msk_as_np = np.transpose(msk_as_np,(2,0,1))
         msk_as_np = msk_as_np[0]
@@ -70,6 +87,12 @@ class DataLoaderSegmentation(data.Dataset):
 
     def __len__(self):
         return len(self.img_files)
+    
+    
+    
+
+    
+    
     
     
     
@@ -94,8 +117,7 @@ def flip(image, option_value):
         image = np.flip(image, 1)
     else:
         # no effect
-        image = image
-        
+        image = image     
     return image
 
 
@@ -108,5 +130,80 @@ def normalization2(image, max, min):
         image : numpy array of image with values turned into standard scores
     """
     image_new = (image - np.min(image))*(max - min)/(np.max(image)-np.min(image)) + min
-    
     return image_new
+
+def add_noise(image, option_value, param):
+    if option_value==0:
+        # Gaussian_noise
+        gaus_sd, gaus_mean = random.randint(0, param), 0
+        image = add_gaussian_noise(image, gaus_mean, gaus_sd)
+    elif option_value==1:
+        # uniform_noise
+        l_bound, u_bound = random.randint(-param, 0), random.randint(0, param)
+        image = add_uniform_noise(image, l_bound, u_bound)
+    else:
+        # no noise
+        image = image
+    return image       
+
+def add_uniform_noise(image, low=-10, high=10):
+    """
+    Args:
+        image : numpy array of image
+        low : lower boundary of output interval
+        high : upper boundary of output interval
+    Return :
+        image : numpy array of image with uniform noise added
+    """
+    uni_noise = np.random.uniform(low, high, image.shape)
+    image = image.astype("int16")
+    noise_img = image + uni_noise
+    image = ceil_floor_image(image) 
+    return noise_img
+
+def add_gaussian_noise(image, mean=0, std=1):
+    """
+    Args:
+        image : numpy array of image
+        mean : pixel mean of image
+        standard deviation : pixel standard deviation of image
+    Return :
+        image : numpy array of image with gaussian noise added
+    """
+    gaus_noise = np.random.normal(mean, std, image.shape)
+    image = image.astype("int16")
+    noise_img = image + gaus_noise
+    image = ceil_floor_image(image)
+    return noise_img
+
+def ceil_floor_image(image):
+    """
+    Args:
+        image : numpy array of image in datatype int16
+    Return :
+        image : numpy array of image in datatype uint8 with ceilling(maximum 255) and flooring(minimum 0)
+    """
+    image[image > 255] = 255
+    image[image < 0] = 0
+    image = image.astype("uint8")
+    return image
+
+
+def change_hsv(image, sat, bright):
+    """
+    Args:
+        image : numpy array of image
+        sat: saturation
+        bright : brightness
+    Return :
+        image : numpy array of image with saturation and brightness added
+    """
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    h, s, v = cv2.split(hsv)
+    for i in range(s.shape[0]):
+        for j in range(s.shape[1]):
+            s[i,j]=min(s[i,j]+sat,255)
+            v[i,j]=min(v[i,j]+bright,255)
+    final_hsv = cv2.merge((h, s, v))
+    image = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+    return image
