@@ -31,6 +31,9 @@ class UNet(nn.Module):
         x = self.outc(x)
         return x
     
+    def predict(self,x):
+        return self.activation(self.forward(x))
+    
 
 class double_conv(nn.Module):
     ''' 2 * (conv -> BN -> ReLU) '''
