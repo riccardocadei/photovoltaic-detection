@@ -22,7 +22,20 @@ def seed_torch(seed=0):
     
 
 def training_model(train_loader,loss_function,optimizer,model,num_epochs,scheduler=None):
+    """Simple training loop for a model, on a training set, with respect to a loss function and optimizer. The function can take a scheduler
+    for the learning rate. 
 
+    Args:
+        train_loader (DataLoader): Data on which the model will be trained on
+        loss_function (LossFunction): Loss function
+        optimizer (Optimizer): Optimizer
+        model (Model): Model that will be trained
+        num_epochs (Int): Number of iterations for training
+        scheduler (Scheduler, optional): Schedule the learning rate, see pytorch doc. Defaults to None.
+
+    Returns:
+        Model: Trained Model
+    """
     if scheduler == None:
         scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 50, gamma=1, last_epoch=-1, verbose=False)
     
@@ -48,6 +61,16 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs,schedul
 
 
 def test_model(test_loader,model):
+    """ Evaluate the model on a training set, with reported error the mean IoU
+
+    Args:
+        test_loader (DataLoader): Training set on which the model will be evaluated on
+        model (Model): Model to be tested
+
+    Returns:
+        FLoat: Mean IoU on tested set
+        Flaot: Mean Accuracy on tested set
+    """
     
     iou_test = []
     acc_test = []
@@ -67,6 +90,21 @@ def test_model(test_loader,model):
 
 
 def select_hyper_param(train_dataset,n_splits,loss_function,num_epochs,lr_candidates):
+    """Performs a grid search on a range of learning rates to find the best lr in term of the mean iou on validation. To have an estimate
+    of the mean iou we perform cross validation for each learning rate.
+
+    Args:
+        train_dataset (Dataset): Data that will be splited in k folds for training and validation
+        n_splits (Int): Number of folds (i.e k)
+        loss_function (LossFun): Loss Function
+        num_epochs (Int): Number of iterations the models will be trained on at each fold  
+        lr (float): Learning rate for the optimizer
+        lr_candidates (list/np.array): Range on learning rates for grid search
+
+    Returns:
+        float: Best Learning Rate obtained
+        float: Best IoU obtained
+    """
     
     comparison = []
 
@@ -80,10 +118,24 @@ def select_hyper_param(train_dataset,n_splits,loss_function,num_epochs,lr_candid
     best_lr = comparison[ind_best,0]
     best_iou = np.max(comparison[:,1])
         
-    return best_iou, comparison[:,1]
+    return best_lr, best_iou
 
 
 def cross_validation(train_dataset, n_splits, loss_function,num_epochs,lr):
+    """Performs k-fold cross validation on the train set. This function is used to predict how good a model trained on the training set
+    will be on the test set.
+
+    Args:
+        train_dataset (Dataset): Data that will be splited in k folds for training and validation
+        n_splits (Int): Number of folds (i.e k)
+        loss_function (LossFun): Loss Function
+        num_epochs (Int): Number of iterations the models will be trained on at each fold  
+        lr (float): Learning rate for the optimizer
+
+    Returns:
+        float: Mean IoU on Validations
+        float: Mean Accuracy on Validations
+    """
     
     iou_val = []
     acc_val = []
@@ -118,6 +170,23 @@ def cross_validation(train_dataset, n_splits, loss_function,num_epochs,lr):
 
 
 def adptative_learning(train_dataset, val_loader,loss_function,input_model,num_epochs,lr_candidates):
+    """Performs a training on a model over a training data set by doing the following: we first fix the learing rate, then we split the training set
+    into two folds, the model is trained on the first fold then on the second fold. After this has been done, we move on the next learning rate.
+    Contrarly to select_hyper_param, we do not reset the model and we continuously evaluate the iou on the 
+
+    Args:
+        train_dataset (Dataset): Data on which that will be splitted and the model solely trained on 
+        val_loader (Dataloader): Data used only for tracking the performance of the model
+        loss_function (LossFun): Loss Function
+        input_model (Model): Model to be trained 
+        num_epochs (Int): Number of iterations the models will be trained on at each fold  
+        lr_candidates (List): Range of learning rates for the optimizer
+
+    Returns:
+        Model: Final Trained Model
+        Float : Best IoU
+        List : History of loss on validaiton
+    """
     
     comparison = []
 
