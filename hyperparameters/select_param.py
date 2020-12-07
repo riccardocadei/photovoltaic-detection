@@ -115,12 +115,14 @@ def test_model(test_loader,model):
         if torch.cuda.is_available():
             images=Variable(images.cuda())
             labels=Variable(labels.cuda())
-        prediction = model.predict(images)
-        iou_i = iou(np.around((prediction).detach().cpu().numpy()),labels.detach().cpu().numpy())
-        iou_test.append(iou_i)
-        acc_i = accuracy(np.around((prediction).detach().cpu().numpy()),labels.detach().cpu().numpy())
-        acc_test.append(acc_i)
-    return np.mean(iou_test), np.mean(acc_test)
+
+        for i in range(images.shape[0]):
+            prediction = model.predict(torch.unsqueeze(images[i],0))
+            iou_i = iou(np.around((prediction).detach().cpu().numpy()),labels[i].detach().cpu().numpy())
+            iou_test.append(iou_i)
+            acc_i = accuracy(np.around((prediction).detach().cpu().numpy()),labels[i].detach().cpu().numpy())
+            acc_test.append(acc_i)
+    return [np.mean(iou_test), np.mean(acc_test)]
 
 
 
