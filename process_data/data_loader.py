@@ -40,13 +40,13 @@ class DataLoaderSegmentation(data.Dataset):
             image = TF.rotate(image,90)
             mask = TF.rotate(mask,90)
 
-        if random.random() > 0.5 and self.augment:
-            sat = np.random.normal(1,0.1)
-            image = TF.adjust_saturation(image,sat)
+        #if random.random() > 0.5 and self.augment:
+            #sat = np.random.normal(1,0.1)
+        image = TF.adjust_saturation(image,2)
 
-        if random.random() > 0.5 and self.augment:
-            bright = np.random.normal(1,0.1)
-            image = TF.adjust_brightness(image,bright)
+        #if random.random() > 0.5 and self.augment:
+            #bright = np.random.normal(1,0.1)
+            #image = TF.adjust_brightness(image,bright)
 
         image = TF.to_tensor(image)
         image = TF.normalize(image,mean=[0.3819, 0.4604, 0.4106],std=[0.2081, 0.1839, 0.1561])
