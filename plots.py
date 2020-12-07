@@ -1,8 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
 def plot_train_val(m_train, m_val, period, metric):
     
     #plt.figure(figsize=(8,8.5))
