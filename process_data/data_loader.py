@@ -1,5 +1,6 @@
 import torch.utils.data as data
 from torchvision.transforms import transforms
+import torchvision.transforms.functional as TF
 import glob
 import numpy as np
 import os
@@ -11,7 +12,7 @@ import cv2
 
 class DataLoaderSegmentation(data.Dataset):
     
-    def __init__(self, folder_path_img,folder_path_mask):
+    def __init__(self, folder_path_img,folder_path_mask=None,augment=True):
         """
         Args:
             image_path (str): the path where the image is located
@@ -19,9 +20,57 @@ class DataLoaderSegmentation(data.Dataset):
             option (str): decide which dataset to import
         """
         self.img_files = glob.glob(os.path.join(folder_path_img,'*.png'))
-        self.mask_files =glob.glob(os.path.join(folder_path_mask,'*.png'))
+        if folder_path_mask == None:
+            self.mask_files = 0
+        else:
+            self.mask_files =glob.glob(os.path.join(folder_path_mask,'*.png'))
+        self.augment = augment
+
+    def transform(self, image, mask):
+        # AUGMENTATION
+        if np.random.random() > 0.5 and self.augment:
+            image = TF.hflip(image)
+            mask = TF.hflip(mask)
+    
+        if np.random.random() > 0.5 and self.augment:
+            image = TF.vflip(image)
+            mask = TF.vflip(mask)
+        
+        if random.random() > 0.5 and self.augment:
+            image = TF.rotate(image,90)
+            mask = TF.rotate(mask,90)
+
+        if random.random() > 0.5 and self.augment:
+            sat = np.random.normal(1,0.1)
+            image = TF.adjust_saturation(image,sat)
+
+        if random.random() > 0.5 and self.augment:
+            bright = np.random.normal(1,0.1)
+            image = TF.adjust_brightness(image,bright)
+
+        image = TF.to_tensor(image)
+        image = TF.normalize(image,mean=[0.3819, 0.4604, 0.4106],std=[0.2081, 0.1839, 0.1561])
 
         
+        # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
+        #noise_num = random.randint(0, 2)
+        #noise_param = 20
+        #img_as_np = add_noise(img_as_np, noise_num, noise_param)
+        # Brightness and Saturation
+
+        #img_as_np = change_hsv(img_as_np, sat, bright)
+       
+      
+        # Normalize the image (in min max range)
+        #img_as_np = normalization2(img_as_np, max=1, min=0)
+
+        mask = TF.to_tensor(mask)
+        mask = mask[0]
+        mask = mask > 0
+        mask = mask.float()
+                
+        return image, mask
+
     def __getitem__(self, index):
         """Get specific data corresponding to the index applying randomly dat augmentation
         Args:
@@ -34,64 +83,40 @@ class DataLoaderSegmentation(data.Dataset):
         # GET IMAGE
         """
         image = Image.open(self.img_files[index])
-        img_as_np = np.asarray(image)
-        np.random.seed(0)
+        if self.mask_files != 0:
+            mask = Image.open(self.mask_files[index])
+        else:
+            mask_shape = image.size
+            mask = Image.new('RGB', mask_shape)        
+        
+        x, y = self.transform(image, mask)
+        return x, y
 
-        # AUGMENTATION
-        
-        # flip {0: vertical, 1: horizontal, 2: both, 3: none}
-        flip_num = random.randint(0, 3)         
-        img_as_np = flip(img_as_np, flip_num)
-        # rotate of rot_num*90 degrees in counterclockwise
-        # since we are altready flipping, rotating of 180 or 270 is redundant
-        rot_num = random.randint(0, 1)
-        img_as_np = np.rot90(img_as_np, rot_num)
-        # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
-        #noise_num = random.randint(0, 2)
-        #noise_param = 20
-        #img_as_np = add_noise(img_as_np, noise_num, noise_param)
-        # Brightness and Saturation
-        sat = random.randint(0,75)
-        bright = random.randint(0,40)
-        img_as_np = change_hsv(img_as_np, sat, bright)
-       
-      
-        # Normalize the image (in min max range)
-        img_as_np = normalization2(img_as_np, max=1, min=0)
-       
-        # Convert numpy array to tensor
-        img_as_np = np.transpose(img_as_np,(2,0,1))
-        img_as_tensor = torch.from_numpy(img_as_np).float()  
-        
-        
-        """
-        # GET MASK
-        """
-        mask = Image.open(self.mask_files[index])
-        msk_as_np = np.asarray(mask)
-        
-        # AUGMENTATION
-        
-        # flip the mask with respect to image
-        msk_as_np = flip(msk_as_np, flip_num)
-        # rotate the mask with respect to image
-        msk_as_np = np.rot90(msk_as_np, rot_num)
-        
-        msk_as_np = np.transpose(msk_as_np,(2,0,1))
-        msk_as_np = msk_as_np[0]
-        msk_as_np = msk_as_np > 0
-        
-        # Convert numpy array to tensor
-        msk_as_tensor =  torch.tensor(msk_as_np, dtype = torch.float)
-        
-        return img_as_tensor, msk_as_tensor
+    
 
     def __len__(self):
         return len(self.img_files)
-    
-    
-    
 
+
+
+def change_hsv(image, sat, bright):
+    """
+    Args:
+        image : numpy array of image
+        sat: saturation
+        bright : brightness
+    Return :
+        image : numpy array of image with saturation and brightness added
+    """
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    h, s, v = cv2.split(hsv)
+    for i in range(s.shape[0]):
+        for j in range(s.shape[1]):
+            s[i,j]=min(s[i,j]+sat,255)
+            v[i,j]=min(v[i,j]+bright,255)
+    final_hsv = cv2.merge((h, s, v))
+    image = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+    return image
     
     
     
@@ -189,24 +214,4 @@ def ceil_floor_image(image):
     image[image > 255] = 255
     image[image < 0] = 0
     image = image.astype("uint8")
-    return image
-
-
-def change_hsv(image, sat, bright):
-    """
-    Args:
-        image : numpy array of image
-        sat: saturation
-        bright : brightness
-    Return :
-        image : numpy array of image with saturation and brightness added
-    """
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    h, s, v = cv2.split(hsv)
-    for i in range(s.shape[0]):
-        for j in range(s.shape[1]):
-            s[i,j]=min(s[i,j]+sat,255)
-            v[i,j]=min(v[i,j]+bright,255)
-    final_hsv = cv2.merge((h, s, v))
-    image = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
     return image
