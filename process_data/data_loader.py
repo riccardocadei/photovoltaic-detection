@@ -49,7 +49,7 @@ class DataLoaderSegmentation(data.Dataset):
             #image = TF.adjust_brightness(image,bright)
 
         image = TF.to_tensor(image)
-        image = TF.normalize(image,mean=[0.3366, 0.4940, 0.3839],std=[0.2307, 0.1836, 0.1586])
+        image = TF.normalize(image,mean=[0.3819, 0.4604, 0.4106],std=[0.2081, 0.1839, 0.1561])
 
         
         # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
