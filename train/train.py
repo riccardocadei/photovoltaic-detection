@@ -35,7 +35,7 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs,schedul
     history_val_loss = []
     history_train_iou = []
     history_val_iou = []
-    period = 1
+    period = 25
     
     for epoch in range(num_epochs):
 
@@ -85,5 +85,5 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs,schedul
             history_train_loss.append(running_train_loss/(len(train_loader)))
             history_train_iou.append(running_train_iou/(len(train_loader)*2))
             print('Epoch n.',epoch, 'Train Loss',np.around(history_train_loss[-1],2),'Train Iou',np.around(history_train_iou[-1],2),'Time Remaining',np.around((num_epochs-epoch)*(time.time()-t0)/60,1))
-        
+            print('----------------------------------------------')
     return history_train_loss, history_val_loss, history_train_iou, history_val_iou
