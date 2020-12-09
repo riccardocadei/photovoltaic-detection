@@ -41,6 +41,9 @@ class DataLoaderSegmentation(data.Dataset):
             mask = TF.rotate(mask,90)
 
         #if random.random() > 0.5 and self.augment:
+            #image = TF.gaussian_blur(image, 3, sigma=0.05)
+
+        #if random.random() > 0.5 and self.augment:
             #sat = np.random.normal(1,0.1)
         image = TF.adjust_saturation(image,2)
 
@@ -49,7 +52,7 @@ class DataLoaderSegmentation(data.Dataset):
             #image = TF.adjust_brightness(image,bright)
 
         image = TF.to_tensor(image)
-        image = TF.normalize(image,mean=[0.3819, 0.4604, 0.4106],std=[0.2081, 0.1839, 0.1561])
+        image = TF.normalize(image,mean=[0.3366, 0.4940, 0.3839],std=[0.2307, 0.1836, 0.1586])
 
         
         # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
