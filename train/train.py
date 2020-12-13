@@ -37,7 +37,7 @@ def training_model(train_loader,loss_function,optimizer,model,num_epochs,schedul
     history_val_iou = []
     period = 25
     
-    for epoch in range(num_epochs):
+    for epoch in range(num_epochs+1):
 
         
         model.train()

@@ -26,19 +26,23 @@ class DataLoaderSegmentation(data.Dataset):
             self.mask_files =glob.glob(os.path.join(folder_path_mask,'*.png'))
         self.augment = augment
 
-    def transform(self, image, mask):
-        # AUGMENTATION
-        if np.random.random() > 0.5 and self.augment:
+    def augmentor(self,image,mask):
+        if np.random.random() > 0.5:
             image = TF.hflip(image)
             mask = TF.hflip(mask)
     
-        if np.random.random() > 0.5 and self.augment:
+        if np.random.random() > 0.5:
             image = TF.vflip(image)
             mask = TF.vflip(mask)
         
-        if random.random() > 0.5 and self.augment:
+        if np.random.random() > 0.5:
             image = TF.rotate(image,90)
             mask = TF.rotate(mask,90)
+        
+        return image, mask
+
+    def transform(self, image, mask):
+        # AUGMENTATION
 
         #if random.random() > 0.5 and self.augment:
             #image = TF.gaussian_blur(image, 3, sigma=0.05)
@@ -52,7 +56,7 @@ class DataLoaderSegmentation(data.Dataset):
             #image = TF.adjust_brightness(image,bright)
 
         image = TF.to_tensor(image)
-        image = TF.normalize(image,mean=[0.3366, 0.4940, 0.3839],std=[0.2307, 0.1836, 0.1586])
+        image = TF.normalize(image,mean=[0.3676, 0.5049, 0.4272],std=[0.2419, 0.1974, 0.1665])
 
         
         # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
@@ -74,7 +78,7 @@ class DataLoaderSegmentation(data.Dataset):
                 
         return image, mask
 
-    def __getitem__(self, index):
+    def __getitem__(self, index,show_og=False):
         """Get specific data corresponding to the index applying randomly dat augmentation
         Args:
             index (int): index of the data
@@ -92,8 +96,16 @@ class DataLoaderSegmentation(data.Dataset):
             mask_shape = image.size
             mask = Image.new('RGB', mask_shape)        
         
+        if self.augment:
+            image, mask = self.augmentor(image,mask)
+
+        z = image
         x, y = self.transform(image, mask)
-        return x, y
+
+        if show_og:
+            return x, y, z
+        else:
+            return x,y
 
     
 
