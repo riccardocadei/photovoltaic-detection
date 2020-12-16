@@ -27,7 +27,7 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 
 ### Data
 - The input aerial images are RGB aerial images in PNG form and  each  image  has  size 250×250×3 with pixelsize 0.25×0.252. 
-- The original images are transformed with saturation and classic normalization. 
+- The original input images are transformed with saturation and classic normalization before training. 
 - A real-time data argumentation are applies only on training set by randomly flipping images horizontally or vertically or rotating in ninety degrees.
 - We used the provided labelling tool to prepare the datasets for trainng, validation and test. The labelled images are a binary mask with 1 for pixel in PV area , and 0 otherwise.
 - The  output  of  our  model  isagain a binary image, where the pixel is one, if its probability ofbeing in the PV area is bigger than the threshold.
