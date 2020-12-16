@@ -22,9 +22,7 @@ The library for visualization is `matplotlib`.
 
 The project target is to segment in aerial images of Switzerland(Geneva) the area available for the installation of rooftop photovoltaics (PV) panels, namely the area we have on roofs after excluding chimneys, windows, existing PV installations and other so-called ‘superstructures’. The task is a pixel-wise binary-semantic segmentation problem. And we are interested in the class where pixels can be classified as ‘suitable area’ for PV installations.
 
-![Screenshot from 2020-12-16 12-09-55](https://user-images.githubusercontent.com/32882147/102341568-4fb87680-3f98-11eb-9eba-ff2d7cfa2d7e.png)
-![Screenshot from 2020-12-16 12-36-22](https://user-images.githubusercontent.com/32882147/102343832-5694b880-3f9b-11eb-8ba5-87c1ee43c33b.png)
-
+![Screenshot from 2020-12-16 13-11-43](https://user-images.githubusercontent.com/32882147/102347151-47643980-3fa0-11eb-83c7-354c90462914.png)
 
 ### Data
 - The input aerial images are RGB aerial images in PNG form and  each  image  has  size 250×250×3 with pixelsize 0.25×0.252. 
