@@ -30,15 +30,18 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 - The input aerial images are RGB aerial images in PNG form and  each  image  has  size 250×250×3 with pixelsize 0.25×0.252. 
 - The original input images are transformed with saturation and classic normalization before training. 
 - A real-time data argumentation are applies only on training set by randomly flipping images horizontally or vertically or rotating in ninety degrees.
-- We used the provided labelling tool to prepare the datasets for trainng, validation and test. The labelled images are a binary mask with 1 for pixel in PV area , and 0 otherwise.
+- We used the provided labelling tool to manually label all the data The labelled images are a binary mask with 1 for pixel in PV area , and 0 otherwise.
 - The  output  of  our  model  isagain a binary image, where the pixel is one, if its probability ofbeing in the PV area is bigger than the threshold.
+- Train/Validation/Test Ratio : 80/10/10
 
 ![intro](https://user-images.githubusercontent.com/32882147/102341360-0a944480-3f98-11eb-8970-9ddbd0277339.jpeg)
 
 ### Methods
-We used Conventional Neural Network(CNN) model base on U-net and adaptive learning to train our model. Iou and Acurrancy are computed to evaluat the performance.
+- We used Conventional Neural Network(CNN) model base on U-net and adaptive learning to train our model. Iou and Acurrancy are computed to evaluat the performance.
+- We trained our model firstly on the whole dataset, then we focused only on a specific class of images, residential area
 
-![unet](https://user-images.githubusercontent.com/32882147/102341521-3e6f6a00-3f98-11eb-92b7-36a61c46446f.jpeg)
+### Results
+In particular we are able to automatically detect in test images of residential areas the available rooftop area at pixel level with an accuracy of about 0.97 and an Intersection over Union index of up to 0.77 using only 244 images in the training. 
 
 * * *
 ## Project structure
