@@ -45,7 +45,7 @@ In particular we are able to automatically detect in test images of residential 
 
 * * *
 ## Project structure
-
+```bash
 ├── labelling_tool
 │   ├── crop.py
 │   ├── data-verification.ipynb
@@ -112,7 +112,7 @@ In particular we are able to automatically detect in test images of residential 
 └── train
     ├── pred_residencial_3.png
     └── train.py
-
+```
 
 
 ### Report
