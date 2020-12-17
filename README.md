@@ -6,7 +6,7 @@ The repository contains the code for Machine Learning course 2020 (CS-433) proje
 
 ### Team
 The project is accomplished by team `OverfitTeam` with members:
-- Riccardo Cadei: [@riccardoradei](https://github.com/riccardocadei)
+- Riccardo Cadei: [@riccardocadei](https://github.com/riccardocadei)
 - Raphael Attias: [@raphaelattias](https://github.com/raphaelattias)
 - Shasha Jiang: [@dust629](https://github.com/dust629)
 
@@ -39,7 +39,7 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 - We trained our model firstly on the whole dataset, then we focused only on a specific class of images, residential area
 
 ### Results
-In particular we are able to automatically detect in test images of residential areas the available rooftop area at pixel level with an accuracy of about 0.97 and an Intersection over Union index of up to 0.77 using only 244 images in the training. 
+In particular we are able to automatically detect in test images of residential areas the available rooftop area at pixel level with an accuracy of about 0.97 and an Intersection over Union index of 0.77 using only 244 images in the training. 
 
 ![iou_batch5loss6](https://user-images.githubusercontent.com/32882147/102346625-7201c280-3f9f-11eb-9bb8-244ac7348d91.png)
 
@@ -58,5 +58,5 @@ In particular we are able to automatically detect in test images of residential 
 
 ### Report
 
-`documents/report.pdf`: a 2-pages report about how we finished the project in detail.
+`documents/report.pdf`: a 4-pages report of this project
 
