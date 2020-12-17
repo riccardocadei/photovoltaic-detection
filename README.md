@@ -1,6 +1,6 @@
 # ML2020 Project 2 Detecting available rooftop area for PV installation with LESO-PB lab
 
-The repository contains the code for Machine Learning course 2020 (CS-433) project 2 at EPFL. More information about this project can be found in the folder `documents`.
+The repository contains the code for Machine Learning course 2020 (CS-433) project 2 at EPFL in partnership with LESO-PB lab. More information about this project can be found in the folder `documents`.
 * * *
 ### General Information
 
@@ -12,7 +12,9 @@ The project is accomplished by team `OverfitTeam` with members:
 
 ### Environment
 The project has been developed and test with `python3.6`.
+
 The required library are `numpy, Pytorch, sklearn, openCV`
+
 The library for visualization is `matplotlib`.
 
 * * *
