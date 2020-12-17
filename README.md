@@ -27,8 +27,8 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 ![Screenshot from 2020-12-16 13-11-43](https://user-images.githubusercontent.com/32882147/102347151-47643980-3fa0-11eb-83c7-354c90462914.png)
 
 ### Data
-- The input aerial images are RGB aerial images in PNG form and  each  image  has  size 250×250×3 with pixelsize 0.25×0.25 m$^2$. 
-- We used the provided labelling tool to manually label all the data The labelled images are a binary mask with 1 for pixel in PV area , and 0 otherwise.
+- The input aerial images are RGB aerial images in PNG form and  each  image  has  size 250×250×3 with pixelsize 0.25×0.25 m^2. 
+- We used the provided labelling tool to manually label all the data The labelled images are a binary mask with 1 for pixel in PV area, and 0 otherwise.
 - The original input images are transformed with saturation and classic normalization before training. 
 - A real-time data argumentation is applied only on the training set by randomly flipping images horizontally or vertically or rotating in ninety degrees.
 - The  output  of  our  model  is again a binary image, where the pixel is one, if its probability of being in the PV area is bigger than a fixed threshold.
