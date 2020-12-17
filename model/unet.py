@@ -3,6 +3,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class UNet(nn.Module):
+    """Unet Model we use in this report, it is based on the original Unet. 
+    
+    Original git: https://github.com/hiyouga/Image-Segmentation-PyTorch
+
+    """
     
     def __init__(self, n_channels, n_classes, bilinear):
         super(UNet, self).__init__()

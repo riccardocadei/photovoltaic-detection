@@ -11,6 +11,8 @@ import cv2
 
 
 class DataLoaderSegmentation(data.Dataset):
+    """Class for all three data loaders (train, test, val)
+    """
     
     def __init__(self, folder_path_img,folder_path_mask=None,augment=True):
         """

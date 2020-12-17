@@ -136,7 +136,7 @@ def cross_validation(train_dataset, n_splits, loss_function,num_epochs,lr):
 def adptative_learning(train_dataset, val_loader,loss_function,input_model,num_epochs,lr_candidates):
     """Performs a training on a model over a training data set by doing the following: we first fix the learing rate, then we split the training set
     into two folds, the model is trained on the first fold then on the second fold. After this has been done, we move on the next learning rate.
-    Contrarly to select_hyper_param, we do not reset the model and we continuously evaluate the iou on the 
+    Contrarly to select_hyper_param, we do not reset the model and we continuously evaluate the iou on the validation set.
 
     Args:
         train_dataset (Dataset): Data on which that will be splitted and the model solely trained on 
