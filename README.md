@@ -6,13 +6,13 @@ The repository contains the code for Machine Learning course 2020 (CS-433) proje
 
 ### Team
 The project is accomplished by team `OverfitTeam` with members:
-- Riccardo Cadei: [@RiccardoCadei](https://github.com/RiccardoCadei)
+- Riccardo Cadei: [@riccardoradei](https://github.com/riccardocadei)
 - Raphael Attias: [@raphaelattias](https://github.com/raphaelattias)
 - Shasha Jiang: [@dust629](https://github.com/dust629)
 
 ### Environment
 The project has been developed and test with `python3.6`.
-The required library are `numpy, Pytorch, sklearn`
+The required library are `numpy, Pytorch, sklearn, openCV`
 The library for visualization is `matplotlib`.
 
 * * *
