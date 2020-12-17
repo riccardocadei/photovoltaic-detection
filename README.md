@@ -40,7 +40,7 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 
 ### Results
 We are able to automatically detect in test images the available rooftop area at pixel level with performances comparable the state-of-the-art.
-In particular, focusing only on the residential area images we got on the test set an accuracy of about 0.97 and an Intersection over Union index of 0.77 using only 244 images for training. Below an example of a predcition on the test set.
+In particular, focusing only on the residential area images we got on the test set an accuracy of about 0.97 and an Intersection over Union index of 0.77 using only 244 images for training. Below an example of a prediction on the test set.
 
 ![intro](https://user-images.githubusercontent.com/32882147/102341360-0a944480-3f98-11eb-8970-9ddbd0277339.jpeg)
 
