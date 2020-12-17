@@ -34,8 +34,6 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 - The  output  of  our  model  is again a binary image, where the pixel is one, if its probability of being in the PV area is bigger than a fixed threshold.
 - Train/Validation/Test Ratio : 80/10/10 \%
 
-![intro](https://user-images.githubusercontent.com/32882147/102341360-0a944480-3f98-11eb-8970-9ddbd0277339.jpeg)
-
 ### Methods
 - We used a Conventional Neural Network(CNN) model based on U-net and an adaptive learning algorithm to train it. Iou and Acurrancy are computed to evaluate the performances.
 - We trained our model firstly on the whole dataset, then we focused only on a specific class of images, residential area
@@ -44,7 +42,7 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 We are able to automatically detect in test images the available rooftop area at pixel level with performances comparable the state-of-the-art.
 In particular, focusing only on the residential area images we got on the test set an accuracy of about 0.97 and an Intersection over Union index of 0.77 using only 244 images for training. Below an example of a predcition on the test set.
 
-![iou_batch5loss6](https://user-images.githubusercontent.com/32882147/102346625-7201c280-3f9f-11eb-9bb8-244ac7348d91.png)
+![intro](https://user-images.githubusercontent.com/32882147/102341360-0a944480-3f98-11eb-8970-9ddbd0277339.jpeg)
 
 * * *
 ## Project structure
