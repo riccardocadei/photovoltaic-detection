@@ -101,14 +101,14 @@ In particular we are able to automatically detect in test images of residential 
 ├── README.md
 ├── reference
 │   └── Literature
-│       ├── Adam a method for stochastic optimization.pdf
-│       ├── Deep learning in the built environment automatic detection of rooftop solar panels using Convolutional Neural Networks.pdf
+│       ├── Adam a method \for stochastic optimization.pdf
+│       ├── Deep learning \in the built environment automatic detection of rooftop solar panels 
+|       |   using Convolutional Neural Networks.pdf
 │       ├── Dropout vs. batch normalization an empirical study.pdf
-│       ├── Satellite Image Segmentation for Building Detection using U-Net.pdf
+│       ├── Satellite Image Segmentation \for Building Detection using U-Net.pdf
 │       ├── Semantic Segmentation of Satellite Images using Deep Learning.pdf
-│       └── U-Net, Convolutional Networks for Biomedical Image Segmentation.pdf
+│       └── U-Net, Convolutional Networks \for Biomedical Image Segmentation.pdf
 ├── run.py
-├── test.png
 └── train
     ├── pred_residencial_3.png
     └── train.py
