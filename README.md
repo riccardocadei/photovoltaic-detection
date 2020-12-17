@@ -46,13 +46,72 @@ In particular we are able to automatically detect in test images of residential 
 * * *
 ## Project structure
 
-### process_data 
-### model
-### optimizer
-### loss
-### train
-### hyperparameters
-### Notebook
+├── labelling_tool
+│   ├── crop.py
+│   ├── data-verification.ipynb
+│   ├── label_images_from_txt.py
+│   ├── label_images.py
+│   ├── move.py
+│   ├── README.md
+│   └── scan_images.py
+├── loss
+│   ├── 1.png
+│   ├── 2.png
+│   ├── loss.ipynb
+│   ├── loss.py
+│   └── __pycache__
+│       └── loss.cpython-38.pyc
+├── main.ipynb
+├── model
+│   ├── model.ipynb
+│   ├── __pycache__
+│   │   └── unet.cpython-38.pyc
+│   └── unet.py
+├── plots
+│   ├── all
+│   │   ├── batch5loss4
+│   │   │   ├── history_train_ioubatch5loss4_1000.npy
+│   │   │   ...
+│   │   │   └── loss400_batch5loss4.png
+│   │   └── batch5loss9
+│   │       ├── history_train_ioubatch5loss9_1000.npy
+│   │       ... 
+│   │       └── loss1000_batch5loss9.png
+│   ├── other
+│   │   ├── b5w4_iou.pdf
+│   │   ├── b5w4_loss.pdf
+│   │   ├── history_train_iou09122020.npy
+│   │   ...
+│   │   ├── loss_batch5loss4.pdf
+│   │   └── loss_batch5loss5.pdf
+│   ├── plots.py
+│   └── residencial
+│       ├── history_train_ioubatch5loss6_1000.npy
+│       ...
+│       ├── loss1000_batch5loss6.png
+│       └── loss_batch5loss6.png
+├── process_data
+│   ├── data_loader.py
+│   ├── import_test.py
+│   ├── normalize.py
+│   └── __pycache__
+│       ├── data_loader.cpython-38.pyc
+│       ├── data_noara_loader.cpython-38.pyc
+│       └── data_nopv_loader.cpython-38.pyc
+├── README.md
+├── reference
+│   └── Literature
+│       ├── Adam a method for stochastic optimization.pdf
+│       ├── Deep learning in the built environment automatic detection of rooftop solar panels using Convolutional Neural Networks.pdf
+│       ├── Dropout vs. batch normalization an empirical study.pdf
+│       ├── Satellite Image Segmentation for Building Detection using U-Net.pdf
+│       ├── Semantic Segmentation of Satellite Images using Deep Learning.pdf
+│       └── U-Net, Convolutional Networks for Biomedical Image Segmentation.pdf
+├── run.py
+├── test.png
+└── train
+    ├── pred_residencial_3.png
+    └── train.py
 
 
 
