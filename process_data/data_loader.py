@@ -56,7 +56,8 @@ class DataLoaderSegmentation(data.Dataset):
             #image = TF.adjust_brightness(image,bright)
 
         image = TF.to_tensor(image)
-        image = TF.normalize(image,mean=[0.3676, 0.5049, 0.4272],std=[0.2419, 0.1974, 0.1665])
+        #image = TF.normalize(image,mean=[0.3366, 0.4940, 0.3839],std=[0.2307, 0.1836, 0.1586]) # For Residential
+        image = TF.normalize(image,mean=[0.3676, 0.5049, 0.4272],std=[0.2419, 0.1974, 0.1665]) # For All
 
         
         # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
@@ -89,7 +90,7 @@ class DataLoaderSegmentation(data.Dataset):
         """
         # GET IMAGE
         """
-        image = Image.open(self.img_files[index])
+        image = Image.open(self.img_files[index]).convert('RGB')
         if self.mask_files != 0:
             mask = Image.open(self.mask_files[index])
         else:
