@@ -35,12 +35,13 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 ![intro](https://user-images.githubusercontent.com/32882147/102341360-0a944480-3f98-11eb-8970-9ddbd0277339.jpeg)
 
 ### Methods
-- We used Conventional Neural Network(CNN) model base on U-net and adaptive learning to train our model. Iou and Acurrancy are computed to evaluat the performance.
+- We used a Conventional Neural Network(CNN) model based on U-net and adaptive learning algorithm to train it. Iou and Acurrancy are computed to evaluate the performances.
 - We trained our model firstly on the whole dataset, then we focused only on a specific class of images, residential area
 
 ### Results
-In particular we are able to automatically detect in test images of residential areas the available rooftop area at pixel level with an accuracy of about 0.97 and an Intersection over Union index of 0.77 using only 244 images in the training. 
-
+We are able to automatically detect in test images the available rooftop area at pixel level.
+In particular, focusing only on the residential area images we got an accuracy on the test of about 0.97 and an Intersection over Union index on the test of 0.77 using only 244 images for training. 
+Below an example of a predcition on the test set.
 ![iou_batch5loss6](https://user-images.githubusercontent.com/32882147/102346625-7201c280-3f9f-11eb-9bb8-244ac7348d91.png)
 
 * * *
@@ -103,7 +104,7 @@ In particular we are able to automatically detect in test images of residential 
 │   └── Literature
 │       ├── Adam a method \for stochastic optimization.pdf
 │       ├── Deep learning \in the built environment automatic detection of rooftop solar panels 
-|       |   using Convolutional Neural Networks.pdf
+│           using Convolutional Neural Networks.pdf
 │       ├── Dropout vs. batch normalization an empirical study.pdf
 │       ├── Satellite Image Segmentation \for Building Detection using U-Net.pdf
 │       ├── Semantic Segmentation of Satellite Images using Deep Learning.pdf
