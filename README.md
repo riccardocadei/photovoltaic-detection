@@ -121,4 +121,4 @@ In particular, focusing only on the residential area images we got on the test s
 `documents/report.pdf`: a 4-pages report of this project
 
 ### Pre-trained models & data
-Both are available ![here](https://drive.google.com/drive/folders/1nwEv1DNEPEkCbO4TQbw965zjbOVL-x5k?usp=sharing)
+Both are available [here](https://drive.google.com/drive/folders/1nwEv1DNEPEkCbO4TQbw965zjbOVL-x5k?usp=sharing)
