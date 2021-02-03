@@ -35,7 +35,7 @@ The project target is to segment in aerial images of Switzerland(Geneva) the are
 - Train/Validation/Test Ratio : 80/10/10 \%
 
 ### Methods
-- We used a Conventional Neural Network(CNN) model based on U-net and an adaptive learning algorithm to train it. Iou and Acurrancy are computed to evaluate the performances.
+- We used a Convolutional Neural Network(CNN) model based on U-net and an adaptive learning algorithm to train it. Iou and Acurrancy are computed to evaluate the performances.
 - We trained our model firstly on the whole dataset, then we focused only on a specific class of images, residential area
 
 ### Results
