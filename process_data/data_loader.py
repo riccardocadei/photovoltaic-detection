@@ -41,39 +41,33 @@ class DataLoaderSegmentation(data.Dataset):
             image = TF.rotate(image,90)
             mask = TF.rotate(mask,90)
         
+        if random.random() > 0:
+            i, j, h, w = transforms.RandomCrop.get_params(image, output_size=(248, 248))
+            image = TF.crop(image, i, j, h, w)
+            mask = TF.crop(mask, i, j, h, w)
+
+        if random.random() > 0:
+            sigma = np.random.uniform(0,0.05)
+            image = TF.gaussian_blur(image, 3, sigma=sigma)
+
+            
+
         return image, mask
 
     def transform(self, image, mask):
         # AUGMENTATION
 
-        #if random.random() > 0.5 and self.augment:
-            #image = TF.gaussian_blur(image, 3, sigma=0.05)
 
-        #if random.random() > 0.5 and self.augment:
-            #sat = np.random.normal(1,0.1)
-        image = TF.adjust_saturation(image,2)
-
-        #if random.random() > 0.5 and self.augment:
-            #bright = np.random.normal(1,0.1)
-            #image = TF.adjust_brightness(image,bright)
-
-        image = TF.to_tensor(image)
-        #image = TF.normalize(image,mean=[0.3366, 0.4940, 0.3839],std=[0.2307, 0.1836, 0.1586]) # For Residential
-        image = TF.normalize(image,mean=[0.3676, 0.5049, 0.4272],std=[0.2419, 0.1974, 0.1665]) # For All
-
+        if random.random() > 0:
+            bright = np.random.normal(1,0.1)
+            image = TF.adjust_brightness(image,bright)
         
-        # add noise {0: Gaussian_noise, 1: uniform_noise, 2: no_noise}
-        #noise_num = random.randint(0, 2)
-        #noise_param = 20
-        #img_as_np = add_noise(img_as_np, noise_num, noise_param)
-        # Brightness and Saturation
-
-        #img_as_np = change_hsv(img_as_np, sat, bright)
-       
-      
-        # Normalize the image (in min max range)
-        #img_as_np = normalization2(img_as_np, max=1, min=0)
-
+    
+        image = TF.to_tensor(image)
+        #image = TF.normalize(image,mean=[0.3268, 0.5080, 0.3735],std=[0.2853, 0.2395, 0.2063]) # For Residential
+        image = TF.normalize(image,mean=[0.4066, 0.4768, 0.4383],std=[0.2121, 0.1899, 0.1618]) # For All
+        #image = TF.normalize(image,mean=[0.3877, 0.5270, 0.4675],std=[0.2972, 0.2621, 0.2189]) # For Industrial
+        
         mask = TF.to_tensor(mask)
         mask = mask[0]
         mask = mask > 0

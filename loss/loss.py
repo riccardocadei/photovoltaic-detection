@@ -56,3 +56,11 @@ def recall(pred,target):
     TP = np.sum(np.logical_and(pred == 1, target == 1))
     FN = np.sum(np.logical_and(pred == 0, target == 1))
     return TP/(TP + FN)
+
+def precision(pred,target):
+    TP = np.sum(np.logical_and(pred == 1, target == 1))
+    FP = np.sum(np.logical_and(pred == 1, target == 0))
+    if (TP + FP) == 0:
+        return 0
+    else:
+        return TP/(TP + FP)

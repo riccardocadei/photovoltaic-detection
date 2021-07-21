@@ -36,6 +36,8 @@ def test_model(test_loader,model):
     
     iou_test = []
     acc_test = []
+    recall_test = []
+    precision_test = []
     for i, (images,labels) in enumerate(test_loader):
         if torch.cuda.is_available():
             images=Variable(images.cuda())
@@ -47,7 +49,11 @@ def test_model(test_loader,model):
             iou_test.append(iou_i)
             acc_i = accuracy(np.around((prediction).detach().cpu().numpy()),labels[i].detach().cpu().numpy())
             acc_test.append(acc_i)
-    return [np.mean(iou_test), np.mean(acc_test)]
+            recall_i = recall(np.around((prediction).detach().cpu().numpy()),labels[i].detach().cpu().numpy())
+            recall_test.append(recall_i)
+            precision_i = precision(np.around((prediction).detach().cpu().numpy()),labels[i].detach().cpu().numpy())
+            precision_test.append(precision_i)
+    return [np.mean(iou_test), np.mean(acc_test), np.mean(recall_test), np.mean(precision_test)]
 
 
 
