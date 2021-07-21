@@ -1,4 +1,4 @@
-# ML2020 Project 2 Detecting available rooftop area for PV installation with LESO-PB lab
+# Detecting available rooftop area from satellite images to install photovoltaic panels
 
 The repository contains the code for Machine Learning course 2020 (CS-433) project 2 at EPFL in partnership with LESO-PB lab. More information about this project can be found in the folder `documents`.
 * * *
@@ -6,8 +6,8 @@ The repository contains the code for Machine Learning course 2020 (CS-433) proje
 
 ### Team
 The project is accomplished by team `OverfitTeam` with members:
-- Riccardo Cadei: [@riccardocadei](https://github.com/riccardocadei)
 - Raphael Attias: [@raphaelattias](https://github.com/raphaelattias)
+- Riccardo Cadei: [@riccardocadei](https://github.com/riccardocadei)
 - Shasha Jiang: [@dust629](https://github.com/dust629)
 
 ### Environment
@@ -22,13 +22,14 @@ The library for visualization is `matplotlib`.
 
 ### Topic: Detecting available rooftop area for PV installation
 
-The project target is to segment in aerial images of Switzerland(Geneva) the area available for the installation of rooftop photovoltaics (PV) panels, namely the area we have on roofs after excluding chimneys, windows, existing PV installations and other so-called ‘superstructures’. The task is a pixel-wise binary-semantic segmentation problem. And we are interested in the class where pixels can be classified as ‘suitable area’ for PV installations.
+The project target is to segment in aerial images of Switzerland (Geneva) the area available for the installation of rooftop photovoltaics (PV) panels, namely the area we have on roofs after excluding chimneys, windows, existing PV installations and other so-called ‘superstructures’. The task is a pixel-wise binary-semantic segmentation problem. And we are interested in the class where pixels can be classified as ‘suitable area’ for PV installations.
 
 ![Screenshot from 2020-12-16 13-11-43](https://user-images.githubusercontent.com/32882147/102347151-47643980-3fa0-11eb-83c7-354c90462914.png)
 
 ### Data
 - The input aerial images are RGB aerial images in PNG form and  each  image  has  size 250×250×3 with pixelsize 0.25×0.25 m^2. 
-- We used the provided labelling tool to manually label all the data The labelled images are a binary mask with 1 for pixel in PV area, and 0 otherwise.
+- All the images in the dataset are manually labelled using the useful functions in `labelling_tool`. 
+- The labelled images are a binary mask with 1 for pixel in PV area, and 0 otherwise.
 - The original input images are transformed with saturation and classic normalization before training. 
 - A real-time data argumentation is applied only on the training set by randomly flipping images horizontally or vertically or rotating in ninety degrees.
 - The  output  of  our  model  is again a binary image, where the pixel is one, if its probability of being in the PV area is bigger than a fixed threshold.
@@ -117,7 +118,6 @@ In particular, focusing only on the residential area images we got on the test s
 
 
 ### Report
-
 `documents/report.pdf`: a 4-pages report of this project
 
 ### Pre-trained models & data
