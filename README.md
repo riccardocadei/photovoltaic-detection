@@ -6,7 +6,7 @@ The repository contains the code for Machine Learning course 2020 (CS-433) proje
 
 ### Team
 The project is accomplished by team `OverfitTeam` with members:
-- Raphael Attias: [@raphaelattias](https://github.com/raphaelattias)
+- Raphaël Attias: [@raphaelattias](https://github.com/raphaelattias)
 - Riccardo Cadei: [@riccardocadei](https://github.com/riccardocadei)
 - Shasha Jiang: [@dust629](https://github.com/dust629)
 
