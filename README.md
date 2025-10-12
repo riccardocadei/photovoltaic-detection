@@ -1,45 +1,28 @@
 # Detecting available rooftop area from satellite images to install photovoltaic panels
 
-The repository contains the code for Machine Learning course 2020 (CS-433) project 2 at [EPFL](https://www.epfl.ch/en/) in partnership with [LESO-PB Lab](https://www.epfl.ch/labs/leso/) and it is also the baseline code for the reasearch project: 'Quantification of the suitable area for rooftop solar panel installation from overhead imagery using Convolutional Neural Networks' [[IOPscience](https://iopscience.iop.org/article/10.1088/1742-6596/2042/1/012002)].
-```
-@inproceedings{castello2021quantification,
-  title={Quantification of the suitable rooftop area for solar panel installation from overhead imagery using Convolutional Neural Networks},
-  author={Castello, Roberto and Walch, Alina and Attias, Rapha{\"e}l and Cadei, Riccardo and Jiang, Shasha and Scartezzini, Jean-Louis},
-  booktitle={Journal of Physics: Conference Series},
-  volume={2042},
-  number={1},
-  pages={012002},
-  year={2021},
-  organization={IOP Publishing}
-}
-```
-More information about this project can be found in the folder `documents`.
-* * *
-### General Information
+The repository contains the code for Machine Learning course 2020 (CS-433) project 2 at [EPFL](https://www.epfl.ch/en/) in partnership with [LESO-PB Lab](https://www.epfl.ch/labs/leso/) (4 pages [report](https://github.com/riccardocadei/photovoltaic-detection/blob/main/reference/report.pdf)) and it is also the baseline code for the reasearch project: 'Quantification of the suitable area for rooftop solar panel installation from overhead imagery using Convolutional Neural Networks' [[IOPscience](https://iopscience.iop.org/article/10.1088/1742-6596/2042/1/012002)].
 
-### Team
-The project is accomplished by team `OverfitTeam` with members:
+### Authors 
+
 - Raphaël Attias: [@raphaelattias](https://github.com/raphaelattias)
 - Riccardo Cadei: [@riccardocadei](https://github.com/riccardocadei)
 - Shasha Jiang: [@dust629](https://github.com/dust629)
 
 ### Environment
-The project has been developed and test with `python3.6`.
+- Tested with `Python 3.6`.
+- Dependencies: `NumPy`, `PyTorch`, `scikit-learn`, `OpenCV`.
+- Visualization: `Matplotlib`.
 
-The required library are `numpy, Pytorch, sklearn, openCV`
 
-The library for visualization is `matplotlib`.
+## Overview
 
-* * *
-## Project Information
-
-### Topic: Detecting available rooftop area for PV installation
+### Task: Detecting available rooftop area for PV installation
 
 The project target is to segment in aerial images of Switzerland (Geneva) the area available for the installation of rooftop photovoltaics (PV) panels, namely the area we have on roofs after excluding chimneys, windows, existing PV installations and other so-called ‘superstructures’. The task is a pixel-wise binary-semantic segmentation problem. And we are interested in the class where pixels can be classified as ‘suitable area’ for PV installations.
 
 ![Screenshot from 2020-12-16 13-11-43](https://user-images.githubusercontent.com/32882147/102347151-47643980-3fa0-11eb-83c7-354c90462914.png)
 
-### Data
+### Data ([Hugging Face](https://huggingface.co/datasets/raphaelattias/overfitteam-geneva-satellite-images))
 - The input aerial images are RGB aerial images in PNG form and  each  image  has  size 250×250×3 with pixelsize 0.25×0.25 m^2. 
 - All the images in the dataset are manually labelled using the useful functions in `labelling_tool`. 
 - The labelled images are a binary mask with 1 for pixel in PV area, and 0 otherwise.
@@ -130,8 +113,30 @@ In particular, focusing only on the residential area images we got on the test s
 ```
 
 
-### Report
-`documents/report.pdf`: a 4-pages report of this project
 
-### Pre-trained models & data
-Both are available [here](https://drive.google.com/drive/folders/1nwEv1DNEPEkCbO4TQbw965zjbOVL-x5k?usp=sharing)
+## References 
+
+[Paper](https://iopscience.iop.org/article/10.1088/1742-6596/2042/1/012002)
+```
+@inproceedings{castello2021quantification,
+  title={Quantification of the suitable rooftop area for solar panel installation from overhead imagery using Convolutional Neural Networks},
+  author={Castello, Roberto and Walch, Alina and Attias, Rapha{\"e}l and Cadei, Riccardo and Jiang, Shasha and Scartezzini, Jean-Louis},
+  booktitle={Journal of Physics: Conference Series},
+  volume={2042},
+  number={1},
+  pages={012002},
+  year={2021},
+  organization={IOP Publishing}
+}
+```
+
+[Dataset](https://huggingface.co/datasets/raphaelattias/overfitteam-geneva-satellite-images)
+```
+@dataset{geneva_satellite_2024,
+  title={Geneva Satellite Images Dataset - Rooftop Segmentation},
+  author={Attias, Raphaël and Cadei, Riccardo and Jiang, Shasha},
+  year={2024},
+  publisher={Hugging Face},
+  url={https://huggingface.co/datasets/raphaelattias/overfitteam-geneva-satellite-images}
+}
+```
